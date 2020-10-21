@@ -11,5 +11,6 @@ namespace Entity.Models
         public Account Account { get; set; }
         
         public IList<UserProject> UserProjects { get; set; }
+        public IList<Project> Projects { get; set; }
     }
 }
