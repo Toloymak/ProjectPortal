@@ -12,9 +12,15 @@ namespace Entity
         public DbSet<BlockItem> BlockItems { get; set; }
         public DbSet<Page> Pages { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer("Server=localhost;Database=ProjectPortal;Trusted_Connection=True;");
-        
+        public ProjectContext(DbContextOptions<ProjectContext> options)
+            : base(options)
+        {
+            
+        }
+        //
+        // protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //     => options.UseSqlServer("Server=localhost;Database=ProjectPortal;Trusted_Connection=True;");
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
         }

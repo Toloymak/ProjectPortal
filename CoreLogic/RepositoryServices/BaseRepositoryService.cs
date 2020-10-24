@@ -22,11 +22,11 @@ namespace CoreLogic.RepositoryServices
         void Delete(TEntity entity);
     }
 
-    public abstract class BaseRepositoryService<TEntity> : IBaseRepositoryService<TEntity> where TEntity : EntityBase
+    public class BaseRepositoryService<TEntity> : IBaseRepositoryService<TEntity> where TEntity : EntityBase
     {
         private ProjectContext _dbContext;
         
-        protected BaseRepositoryService(ProjectContext dbContext)
+        public BaseRepositoryService(ProjectContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -67,5 +67,10 @@ namespace CoreLogic.RepositoryServices
         
         public void Delete(TEntity entity)
             => _dbContext.Remove(entity);
+
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }
     }
 }
