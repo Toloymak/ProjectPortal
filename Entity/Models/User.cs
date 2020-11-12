@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace Entity.Models
 {
-    public class User : EntityBase
+    public class User : IdentityUser
     {
         public string Name { get; set; }
         

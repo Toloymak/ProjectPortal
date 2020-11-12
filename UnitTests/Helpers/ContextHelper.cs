@@ -11,7 +11,7 @@ namespace UnitTests.Helpers
                 .UseInMemoryDatabase("TestDb")
                 .Options;
             
-            var context = new ProjectContext(options);
+            var context = new ProjectContext();
 
             return context;
         }
