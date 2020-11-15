@@ -12,7 +12,7 @@ export default class HeaderBlock extends React.Component {
     componentDidMount() {
         this.timerId = setInterval(
             () => {
-                this.setState({ 
+                this.setState({
                     name: (this.state.name + "."),
                 });
             },
@@ -21,8 +21,13 @@ export default class HeaderBlock extends React.Component {
     }
 
     render() {
+        let boolresult = false;
         return (
-            <UserName name = {this.state.name} />
+            <div>
+                {boolresult &&
+                    <UserName name={this.state.name} />
+                }
+            </div>
         );
     }
 }
