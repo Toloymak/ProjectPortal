@@ -1,0 +1,35 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<style>
+    .paper-items div{
+        width: 200px;
+        height: 100px;
+        float: left;
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: monospace;
+    }
+    
+</style>
+
+<div class="paper-items">
+@for (var i = 0; i < 10; i++)
+{
+    var item = i;
+    <MatPaper Elevation="5">
+        Test
+    </MatPaper>
+}
+</div>
+
+
+@code
+{
+    private int _currentItem = 0;
+}
