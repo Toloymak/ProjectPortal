@@ -1,11 +1,8 @@
 ﻿@page "/"
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+@using Web.Models
 
 <style>
-    .paper-items div{
+    .paper-items div div{
         width: 200px;
         height: 100px;
         float: left;
@@ -19,17 +16,31 @@ Welcome to your new app.
 </style>
 
 <div class="paper-items">
-@for (var i = 0; i < 10; i++)
-{
-    var item = i;
-    <MatPaper Elevation="5">
-        Test
-    </MatPaper>
-}
+    @foreach (var block in _blockModels)
+    {
+        <div>
+        <h2>@block.Title</h2>
+        @foreach (var link in block.Links)
+        {
+            <MatPaper Elevation="5">
+                <h3>@link.Title</h3>
+                <p>@link.Description</p>
+                <p>@link.Description</p>
+            </MatPaper>
+        }
+        </div>
+    }
 </div>
 
 
 @code
 {
     private int _currentItem = 0;
+
+    private IList<BlockModel> _blockModels = new List<BlockModel>()
+    {
+        new BlockModel()
+        {
+        }
+    };
 }
