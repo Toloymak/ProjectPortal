@@ -1,17 +1,41 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+<MatThemeProvider Theme="_defaultTheme">
+    <MatAppBarContainer>
+        <MatAppBar Style="z-index: 100">
+            <MatAppBarRow>
+                <MatAppBarSection>
+                    <MatIconButton Icon="menu" ToggledChanged="ChangeMenuButton"></MatIconButton>
+                    <MatAppBarTitle>Project portal</MatAppBarTitle>
+                </MatAppBarSection>
+            </MatAppBarRow>
+        </MatAppBar>
+        <MatDrawerContent Style="padding-top: 64px;">
+            <MatDrawer @bind-Opened="@_isVisibleMenu">
+                <MatDrawerContent>
+                    <MatNavMenu>
+                        <MatNavItem NavLinkMatch="NavLinkMatch.All" Href="" Title="Home">
+                            <MatIcon Icon="@MatIconNames.Home"></MatIcon> Home
+                        </MatNavItem>
+                        <MatNavItem NavLinkMatch="NavLinkMatch.All">
+                            <MatIcon Icon="@MatIconNames.Info"></MatIcon> About
+                        </MatNavItem>
+                    </MatNavMenu>
+                </MatDrawerContent>
+            </MatDrawer>
+            <MatDrawerContent>
+                @Body
+            </MatDrawerContent>
+        </MatDrawerContent>
+    </MatAppBarContainer>
+</MatThemeProvider>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
 
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+@code
+{
+    private bool _isVisibleMenu;
+
+    private void ChangeMenuButton(bool isActive) => _isVisibleMenu = isActive;
+    
+    private MatTheme _defaultTheme = new MatTheme();
+}

@@ -2,7 +2,11 @@
 @using Web.Models
 
 <style>
-    .paper-items div div{
+    .board{
+        display: table;
+    }
+
+    .board div div{
         width: 200px;
         height: 100px;
         float: left;
@@ -13,12 +17,16 @@
         font-family: monospace;
     }
     
+    .block {
+        display: table-row;;
+    }
+    
 </style>
 
-<div class="paper-items">
+<div class="board">
     @foreach (var block in _blockModels)
     {
-        <div>
+        <div class="block">
         <h2>@block.Title</h2>
         @foreach (var link in block.Links)
         {
@@ -41,6 +49,103 @@
     {
         new BlockModel()
         {
+            Links = new List<LinkModel>()
+            {
+                new LinkModel()
+                {
+                    Description = "Some desc1",
+                    Link = "https://test.test",
+                    Title = "Title of link 1"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc2",
+                    Link = "https://test.test",
+                    Title = "Title of link 2"
+                },
+                new LinkModel()
+                {
+                    Description = "Some desc3",
+                    Link = "https://test.test",
+                    Title = "Title of link 3"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc4",
+                    Link = "https://test.test",
+                    Title = "Title of link 4"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc5",
+                    Link = "https://test.test",
+                    Title = "Title of link 5"
+                },
+                new LinkModel()
+                {
+                    Description = "Some desc6",
+                    Link = "https://test.test",
+                    Title = "Title of link 6"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc7",
+                    Link = "https://test.test",
+                    Title = "Title of link 7"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc7",
+                    Link = "https://test.test",
+                    Title = "Title of link 7"
+                }
+            },
+            Title = "Test title 1"
+        },
+        new BlockModel()
+        {
+            Links = new List<LinkModel>()
+            {
+                new LinkModel()
+                {
+                    Description = "Some desc1",
+                    Link = "https://test.test",
+                    Title = "Title of link 1"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc2",
+                    Link = "https://test.test",
+                    Title = "Title of link 2"
+                },
+                new LinkModel()
+                {
+                    Description = "Some desc3",
+                    Link = "https://test.test",
+                    Title = "Title of link 3"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc4",
+                    Link = "https://test.test",
+                    Title = "Title of link 4"
+                },
+                
+                new LinkModel()
+                {
+                    Description = "Some desc5",
+                    Link = "https://test.test",
+                    Title = "Title of link 5"
+                }
+            },
+            Title = "Test title 2"
         }
     };
 }
