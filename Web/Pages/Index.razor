@@ -1,41 +1,82 @@
 ﻿@page "/"
 @using Web.Models
+@using Web.TestData
 
 <style>
     .board{
         display: table;
     }
 
-    .board div div{
-        width: 200px;
-        height: 100px;
+    .link-block{
+        width: 300px;
         float: left;
         margin: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: monospace;
+        /*justify-content: center;*/
+        /*align-items: center;*/
+        /*font-family: monospace;*/
+        transition: box-shadow 0.5s ease-in-out;
+        display: block;
+    }
+    
+    .link-block:hover{
+        text-decoration: none;
+    }
+    
+    .link-title{
+        color: black;
+        padding: 5px 5px 0;
+        font-size: 20px;
+        font-weight: 600;
+        opacity: 0.9;
+    }
+    
+    .link-url{
+        color: black;
+        opacity: 0.7;
+        text-decoration: underline;
+        font-style: italic;
+        padding: 0 5px;
+        font-size: 13px;
+        margin-top: -6px;
+    }
+    
+    .link-description{
+        color: black;
+        padding: 5px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+    }
+    
+    .link-block:hover{
+        box-shadow: 0px 6px 7px -4px rgb(0 0 0 / 20%),
+                    0px 11px 15px 1px rgb(0 0 0 / 14%),
+                    0px 4px 20px 3px rgb(0 0 0 / 12%);
     }
     
     .block {
         display: table-row;;
     }
     
+    .center-title {
+        text-align: center;
+    }
 </style>
 
 <div class="board">
     @foreach (var block in _blockModels)
     {
         <div class="block">
-        <h2>@block.Title</h2>
-        @foreach (var link in block.Links)
-        {
-            <MatPaper Elevation="5">
-                <h3>@link.Title</h3>
-                <p>@link.Description</p>
-                <p>@link.Description</p>
-            </MatPaper>
-        }
+            <h2 class="center-title">@block.Title</h2>
+            @foreach (var link in block.Links)
+            {
+                <a href="@link.Link" class="link-block mat-elevation-z5">
+                    <div class="link-title">@link.Title</div>
+                    <div class="link-url">@link.Link</div>
+                    <div class="link-description">@link.Description</div>
+                </a>
+            }
         </div>
     }
 </div>
@@ -45,107 +86,5 @@
 {
     private int _currentItem = 0;
 
-    private IList<BlockModel> _blockModels = new List<BlockModel>()
-    {
-        new BlockModel()
-        {
-            Links = new List<LinkModel>()
-            {
-                new LinkModel()
-                {
-                    Description = "Some desc1",
-                    Link = "https://test.test",
-                    Title = "Title of link 1"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc2",
-                    Link = "https://test.test",
-                    Title = "Title of link 2"
-                },
-                new LinkModel()
-                {
-                    Description = "Some desc3",
-                    Link = "https://test.test",
-                    Title = "Title of link 3"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc4",
-                    Link = "https://test.test",
-                    Title = "Title of link 4"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc5",
-                    Link = "https://test.test",
-                    Title = "Title of link 5"
-                },
-                new LinkModel()
-                {
-                    Description = "Some desc6",
-                    Link = "https://test.test",
-                    Title = "Title of link 6"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc7",
-                    Link = "https://test.test",
-                    Title = "Title of link 7"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc7",
-                    Link = "https://test.test",
-                    Title = "Title of link 7"
-                }
-            },
-            Title = "Test title 1"
-        },
-        new BlockModel()
-        {
-            Links = new List<LinkModel>()
-            {
-                new LinkModel()
-                {
-                    Description = "Some desc1",
-                    Link = "https://test.test",
-                    Title = "Title of link 1"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc2",
-                    Link = "https://test.test",
-                    Title = "Title of link 2"
-                },
-                new LinkModel()
-                {
-                    Description = "Some desc3",
-                    Link = "https://test.test",
-                    Title = "Title of link 3"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc4",
-                    Link = "https://test.test",
-                    Title = "Title of link 4"
-                },
-                
-                new LinkModel()
-                {
-                    Description = "Some desc5",
-                    Link = "https://test.test",
-                    Title = "Title of link 5"
-                }
-            },
-            Title = "Test title 2"
-        }
-    };
+    private readonly IList<BlockModel> _blockModels = TestBlockModels.BlockModels;
 }

@@ -1,5 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
+<style>
+    .body-wrapper{
+        margin: 50px auto;
+        max-width: 1200px;
+    }
+</style>
+
 <MatThemeProvider Theme="_defaultTheme">
     <MatAppBarContainer>
         <MatAppBar Style="z-index: 100">
@@ -24,7 +31,9 @@
                 </MatDrawerContent>
             </MatDrawer>
             <MatDrawerContent>
-                @Body
+                <div class="body-wrapper">
+                    @Body
+                </div>
             </MatDrawerContent>
         </MatDrawerContent>
     </MatAppBarContainer>
