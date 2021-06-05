@@ -4,18 +4,13 @@
 
 <style>
     .board{
-        display: table;
     }
 
     .link-block{
         width: 300px;
-        float: left;
         margin: 20px;
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        /*font-family: monospace;*/
         transition: box-shadow 0.5s ease-in-out;
-        display: block;
+        display: inline-block;
     }
     
     .link-block:hover{
@@ -38,6 +33,9 @@
         padding: 0 5px;
         font-size: 13px;
         margin-top: -6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     
     .link-description{
@@ -50,13 +48,13 @@
     }
     
     .link-block:hover{
-        box-shadow: 0px 6px 7px -4px rgb(0 0 0 / 20%),
-                    0px 11px 15px 1px rgb(0 0 0 / 14%),
-                    0px 4px 20px 3px rgb(0 0 0 / 12%);
+        box-shadow: 0 6px 7px -4px rgb(0 0 0 / 20%),
+                    0 11px 15px 1px rgb(0 0 0 / 14%),
+                    0 4px 20px 3px rgb(0 0 0 / 12%);
     }
     
     .block {
-        display: table-row;;
+        column-count: 3;
     }
     
     .center-title {
@@ -67,11 +65,12 @@
 <div class="board">
     @foreach (var block in _blockModels)
     {
+        <h2 class="center-title">@block.Title</h2>
         <div class="block">
-            <h2 class="center-title">@block.Title</h2>
             @foreach (var link in block.Links)
             {
-                <a href="@link.Link" class="link-block mat-elevation-z5">
+                
+                <a href="@link.Link" class="link-block mat-elevation-z5" style="order: @link.Order">
                     <div class="link-title">@link.Title</div>
                     <div class="link-url">@link.Link</div>
                     <div class="link-description">@link.Description</div>
