@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject IMatToaster Toaster
 
 <style>
     .body-wrapper{
@@ -10,24 +11,15 @@
 <MatThemeProvider Theme="_defaultTheme">
     <MatAppBarContainer>
         <MatAppBar Style="z-index: 100">
-            <MatAppBarRow>
-                <MatAppBarSection>
-                    <MatIconButton Icon="menu" ToggledChanged="ChangeMenuButton"></MatIconButton>
-                    <MatAppBarTitle>Project portal</MatAppBarTitle>
-                </MatAppBarSection>
-            </MatAppBarRow>
+            <Header ChangeOrganization="ChangeOrganization"
+                    ChangeMenuButton="ChangeMenuButton"
+                    PrintTest="PrintTest">
+            </Header>
         </MatAppBar>
         <MatDrawerContent Style="padding-top: 64px;">
             <MatDrawer @bind-Opened="@_isVisibleMenu">
                 <MatDrawerContent>
-                    <MatNavMenu>
-                        <MatNavItem NavLinkMatch="NavLinkMatch.All" Href="" Title="Home">
-                            <MatIcon Icon="@MatIconNames.Home"></MatIcon> Home
-                        </MatNavItem>
-                        <MatNavItem NavLinkMatch="NavLinkMatch.All">
-                            <MatIcon Icon="@MatIconNames.Info"></MatIcon> About
-                        </MatNavItem>
-                    </MatNavMenu>
+                    <NavMenu></NavMenu>
                 </MatDrawerContent>
             </MatDrawer>
             <MatDrawerContent>
@@ -42,9 +34,22 @@
 
 @code
 {
+    private readonly MatTheme _defaultTheme = new MatTheme();
+
+    private string Org { get; set; }
     private bool _isVisibleMenu;
 
     private void ChangeMenuButton(bool isActive) => _isVisibleMenu = isActive;
-    
-    private MatTheme _defaultTheme = new MatTheme();
+
+    private void PrintTest()
+    {
+        Console.WriteLine("Org: " + Org);
+        Toaster.Add("Org: " + Org, MatToastType.Info, "Debug info", MatIconNames.Info); 
+        Console.WriteLine("done!");
+    }
+
+    private void ChangeOrganization(string organizationName)
+    {
+        Org = organizationName;
+    }
 }

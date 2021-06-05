@@ -1,0 +1,26 @@
+﻿<MatIconButton Icon="@MatIconNames.Person" OnClick="@OpenUserMenu" RefBack="@_buttonForwardRef"/>
+
+<MatMenu @ref="_userMenu" TargetForwardRef="@_buttonForwardRef" Class="user-menu">
+    <MatList>
+        <MatListItem OnClick="() => ChangeOrganization.InvokeAsync(Org1)">Organization 1</MatListItem>
+        <MatListItem OnClick="() => ChangeOrganization.InvokeAsync(Org2)">Organization 2</MatListItem>
+    </MatList>
+</MatMenu>
+
+
+@code
+{
+    const string Org1 = "org1";
+    const string Org2 = "org2";
+
+    readonly ForwardRef _buttonForwardRef = new();
+    BaseMatMenu _userMenu;
+    
+    [Parameter]
+    public EventCallback<string> ChangeOrganization { get; set; }
+
+    private async Task OpenUserMenu(MouseEventArgs e)
+    {
+        await _userMenu.OpenAsync();
+    }
+}
