@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  project-portla-web:
+    image: project-portla-web
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+    ports:
+      - 6000:80
