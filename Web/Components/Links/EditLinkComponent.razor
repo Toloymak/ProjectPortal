@@ -1,0 +1,80 @@
+﻿@inject IMatDialogService _matDialogService
+
+<style>
+    .dialog-title{
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+    
+    .link-save-btn{
+        margin-left: 0px;
+    }
+    
+    .close-btn{
+        margin-left: 0px;
+    }
+    
+    .delete-btn{
+        margin-left: auto;
+        margin-right: 0px;
+        color: red !important;
+    }
+</style>
+
+<MatDialogTitle Class="dialog-title">
+    <div style="flex: 1;">Edit link</div>
+</MatDialogTitle>
+<MatDialogContent>
+    <p>
+        <MatTextField Label="Title" @bind-Value="@Title"></MatTextField>
+    </p>
+    <p>
+        <MatTextField Label="Url" @bind-Value="@Url"></MatTextField>
+    </p>
+    <p>
+        <MatTextField Label="Description" @bind-Value="@Description"></MatTextField>
+    </p>
+    <p>
+        <MatTextField Label="Order" @bind-Value="@Order"></MatTextField>
+    </p>
+</MatDialogContent>
+<MatDialogActions>
+    <MatButton OnClick="@(_ => SaveLink())" Class="link-save-btn">Save</MatButton>
+    <MatButton OnClick="@(_ => CloseDialog())" Class="close-btn">Close</MatButton>
+    <MatButton OnClick="@(_ => SaveLink())" Class="delete-btn">Delete</MatButton>
+</MatDialogActions>
+
+@code
+{
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string Url { get; set; }
+    [Parameter]
+    public string Description { get; set; }
+    [Parameter]
+    public int Order { get; set; }
+    
+    
+
+    [CascadingParameter]
+    public MatDialogReference DialogReference { get; set; }
+
+    private void CloseDialog()
+    {
+        DialogReference.Close("Close");
+    }
+    
+    private void SaveLink()
+    {
+        Console.WriteLine("Save");
+        DialogReference.Close("Save");
+    }
+    
+    private void DeleteLink()
+    {
+        Console.WriteLine("Delete!");
+        DialogReference.Close("Delete");
+    }
+}

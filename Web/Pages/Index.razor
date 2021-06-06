@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using Web.Models
 @using Web.TestData
+@using Web.Components.Links
+@inject IMatDialogService _matDialogService
 
 <style>
     .board{
@@ -13,16 +15,19 @@
         display: inline-block;
     }
     
-    .link-block:hover{
-        text-decoration: none;
-    }
-    
     .link-title{
-        color: black;
         padding: 5px 5px 0;
         font-size: 20px;
         font-weight: 600;
         opacity: 0.9;
+    }
+
+    .link-title a{
+        color: black;
+    }
+    
+    .link-title a:hover{
+        text-decoration: none;
     }
     
     .link-url{
@@ -36,6 +41,11 @@
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        display: block;
+    }
+    
+    .link-url:hover{
+        color: black;
     }
     
     .link-description{
@@ -74,6 +84,22 @@
     .center-title {
         text-align: center;
     }
+    
+    .link-edit-btn{
+        color: black !important;
+        float: right;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    
+    .link-block:hover .link-edit-btn{
+        opacity: 0.3;
+    }
+    
+    .link-block:hover .link-edit-btn:hover{
+        opacity: 0.8;
+    }
+    
 </style>
 
 <div class="board">
@@ -83,12 +109,16 @@
         <div class="block">
             @foreach (var link in block.Links)
             {
-                
-                <a href="@link.Link" class="link-block mat-elevation-z5" style="order: @link.Order">
-                    <div class="link-title">@link.Title</div>
-                    <div class="link-url">@link.Link</div>
+                <div class="link-block mat-elevation-z5" style="order: @link.Order">
+                    <div class="link-title">
+                        <a href="@link.Link">@link.Title</a>
+                        <MatButton Class="link-edit-btn" OnClick='OpenEditDialog'>
+                            <MatIcon Icon="@MatIconNames.Edit"/>
+                        </MatButton>
+                    </div>
+                    <a href="@link.Link" class="link-url">@link.Link</a>
                     <div class="link-description">@link.Description</div>
-                </a>
+                </div>
             }
         </div>
     }
@@ -97,7 +127,10 @@
 
 @code
 {
-    private int _currentItem = 0;
-
     private readonly IList<BlockModel> _blockModels = TestBlockModels.BlockModels;
+
+    private Task OpenEditDialog()
+    {
+        return _matDialogService.OpenAsync(typeof(EditLinkComponent), null);
+    }
 }
