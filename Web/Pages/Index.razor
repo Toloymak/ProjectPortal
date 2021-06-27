@@ -1,6 +1,5 @@
 ﻿@page "/"
-@using Web.Models
-@using Web.TestData
+@using Types.Models
 @using Web.Components.Links
 @inject IMatDialogService _matDialogService
 
@@ -127,7 +126,7 @@
 
 @code
 {
-    private readonly IList<BlockModel> _blockModels = TestBlockModels.BlockModels;
+    private readonly IList<BlockModel> _blockModels = new List<BlockModel>();
 
     private Task OpenEditDialog()
     {

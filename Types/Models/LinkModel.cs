@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Web.Models
+﻿namespace Types.Models
 {
     public class LinkModel
     {
@@ -8,11 +6,5 @@ namespace Web.Models
         public string Link { get; set; }
         public string Description { get; set; }
         public int Order { get; set; }
-    }
-
-    public class BlockModel
-    {
-        public string Title { get; set; }
-        public IList<LinkModel> Links { get; set; }
     }
 }

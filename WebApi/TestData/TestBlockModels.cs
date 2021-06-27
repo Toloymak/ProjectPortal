@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Web.Models;
+using Types.Models;
 
-namespace Web.TestData
+namespace WebApi.TestData
 {
     public class TestBlockModels
     {

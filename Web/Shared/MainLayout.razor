@@ -1,5 +1,5 @@
 ﻿@inherits LayoutComponentBase
-@inject IMatToaster Toaster
+@inject IMatToaster _toaster
 
 <style>
     .body-wrapper{
@@ -44,7 +44,7 @@
     private void PrintTest()
     {
         Console.WriteLine("Org: " + Org);
-        Toaster.Add("Org: " + Org, MatToastType.Info, "Debug info", MatIconNames.Info); 
+        _toaster.Add("Org: " + Org, MatToastType.Info, "Debug info", MatIconNames.Info); 
         Console.WriteLine("done!");
     }
 
