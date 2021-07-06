@@ -1,5 +1,13 @@
-﻿<MatIconButton Icon="@MatIconNames.Person" OnClick="@OpenUserMenu" RefBack="@_buttonForwardRef"/>
+﻿@using System.Security.Claims
 
+<div>
+    <AuthorizeView>
+        @* ReSharper disable once PossibleNullReferenceException *@
+        @context.User.Identity.Name
+    </AuthorizeView>
+</div>
+
+<MatIconButton Icon="@MatIconNames.Person" OnClick="@OpenUserMenu" RefBack="@_buttonForwardRef"/>
 <MatMenu @ref="_userMenu" TargetForwardRef="@_buttonForwardRef" Class="user-menu">
     <MatList>
         <MatListItem OnClick="() => ChangeOrganization.InvokeAsync(Org1)">Organization 1</MatListItem>
@@ -15,7 +23,7 @@
 
     readonly ForwardRef _buttonForwardRef = new();
     BaseMatMenu _userMenu;
-    
+
     [Parameter]
     public EventCallback<string> ChangeOrganization { get; set; }
 

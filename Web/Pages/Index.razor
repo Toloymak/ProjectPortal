@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using Types.Models
 @using Web.Components.Links
+@using System.Text.Json.Serialization
 @inject IMatDialogService _matDialogService
+@inject HttpClient _httpClient
 
 <style>
     .board{
@@ -101,6 +103,12 @@
     
 </style>
 
+<button @onclick="LogUsername">Log username</button>
+
+<p>@_authMessage</p>
+<p>@_test</p>
+
+
 <div class="board">
     @foreach (var block in _blockModels)
     {
@@ -127,9 +135,31 @@
 @code
 {
     private readonly IList<BlockModel> _blockModels = new List<BlockModel>();
+    private string _test = "";
 
     private Task OpenEditDialog()
     {
         return _matDialogService.OpenAsync(typeof(EditLinkComponent), null);
+    }
+    
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private string _authMessage;
+
+    private async Task LogUsername()
+    {
+        _test = await _httpClient.GetStringAsync("blocks");
+    // var authState = await authenticationStateTask;
+    // var user = authState.User;
+    //
+    // if (user.Identity.IsAuthenticated)
+    // {
+    //     _authMessage = $"{user.Identity.Name} is authenticated.";
+    // }
+    // else
+    // {
+    //     _authMessage = "The user is NOT authenticated.";
+    // }
     }
 }

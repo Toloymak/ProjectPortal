@@ -1,0 +1,50 @@
+﻿@using Types.Models
+@using Web.Services
+
+@inject NavigationManager _navigationManager
+@inject ILoginService _loginService
+
+@page "/login"
+<h3>login</h3>
+
+<AuthorizeView>
+    <Authorized>
+        @{
+            RedirectToMain();
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                @_errorMessage;
+            }
+        </p>
+        <p>
+            <MatTextField @bind-Value="@_loginModel.Login" Label="Login"/>
+        </p>
+        <p>
+            <MatTextField @bind-Value="@_loginModel.Password" Label="Password" Type="password"/>
+        </p>
+        <p>
+            <MatButton OnClick="async () => await TryLogin()">Login</MatButton>
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private readonly LoginModel _loginModel = new();
+    private string _errorMessage = string.Empty;
+    
+    void RedirectToMain() => _navigationManager.NavigateTo("");
+
+    private async Task TryLogin()
+    {
+        // await Task.Delay(1);
+    var result = await _loginService.Login(_loginModel);
+    if (result.IsSuccess)
+        _navigationManager.NavigateTo("/");
+    
+    _errorMessage = result.ErrorMessage;
+    }
+}

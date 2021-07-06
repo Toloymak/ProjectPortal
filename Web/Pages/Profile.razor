@@ -1,0 +1,12 @@
+﻿@page "/profile"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+<h3>Profile</h3>
+
+<AuthorizeView>
+    <h1>Hello, @context.User.Identity.Name!</h1>
+</AuthorizeView>
+
+@code {
+    
+}

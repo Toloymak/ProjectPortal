@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 
 namespace WebApi
@@ -26,7 +27,15 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(o =>
+            {
+                o.AddPolicy("AllowSpecificOrigin",
+                builder => builder
+                   .WithOrigins("http://localhost:5000", "https://localhost:5001")
+                   .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
+                   .AllowAnyMethod()
+                   .AllowCredentials());
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -47,6 +56,7 @@ namespace WebApi
                     c.RoutePrefix = string.Empty;
                 });
             }
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseHttpsRedirection();
 
