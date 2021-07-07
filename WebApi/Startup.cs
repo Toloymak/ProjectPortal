@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using WebApi.Middleware;
+using WebApi.Services;
+using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace WebApi
 {
@@ -24,26 +22,28 @@ namespace WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RegisterDependencies(services, Configuration);
             services.AddCors(o =>
             {
                 o.AddPolicy("AllowSpecificOrigin",
-                builder => builder
-                   .WithOrigins("http://localhost:5000", "https://localhost:5001")
-                   .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
-                   .AllowAnyMethod()
-                   .AllowCredentials());
+                            builder => builder
+                               .WithOrigins("http://localhost:5000", "https://localhost:5001")
+                               .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
+                               .AllowAnyMethod()
+                               .AllowCredentials());
             });
+            
             services.AddControllers();
+            services.UseJwtAuth(Configuration);
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -56,18 +56,32 @@ namespace WebApi
                     c.RoutePrefix = string.Empty;
                 });
             }
-            app.UseCors("AllowSpecificOrigin");
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
+            app.UseHttpsRedirection()
+               .UseCors("AllowSpecificOrigin")
+               .UseRouting()
+               .UseTokenCookie()
+               .UseSecureHeaders()
+               .UseCookiePolicy(new CookiePolicyOptions()
+                {
+                    HttpOnly = HttpOnlyPolicy.Always,
+                    Secure = CookieSecurePolicy.Always,
+                    MinimumSameSitePolicy = SameSiteMode.None,
+                });
+            
+            app.UseAuthentication()
+               .UseAuthorization();
+            
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("default", "{controller}/{action=Get}");
                 endpoints.MapControllers();
-            });
+            }); 
+        }
+
+        public void RegisterDependencies(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<IJwtAuthService, JwtAuthService>();
         }
     }
 }

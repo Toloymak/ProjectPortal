@@ -32,7 +32,7 @@ namespace Web.Services
 
         public async Task<ExecutionResult> Login(LoginModel loginModel)
         {
-            var sectionConfig = _configuration.Get<ConfigModel>();
+            var sectionConfig = _configuration.Get<WebRootConfig>();
             var requestMessage = new HttpRequestMessage()
             {
                 Method = new HttpMethod("POST"),
@@ -46,11 +46,11 @@ namespace Web.Services
 
             if (response.IsSuccessStatusCode)
             {
-                var loginResult = await response.Content.ReadFromJsonAsync<LoginResultModel>();
+                var loginResult = await response.Content.ReadFromJsonAsync<PersonModel>();
                 if (loginResult == null)
                     throw new NullReferenceException("Login result cannot be null");
                 
-                _logger.LogInformation($"Authorized. Login: {loginResult.Person.Login}");
+                _logger.LogInformation($"Authorized. Login: {loginResult.Login}");
                 return ExecutionResult.CreateSuccessResult();
             }
             

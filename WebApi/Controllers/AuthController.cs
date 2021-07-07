@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Types.Models;
+using WebApi.Services;
 
 namespace WebApi.Controllers
 {
@@ -9,44 +13,73 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class AuthController : ControllerBase
     {
-        private static string TestLogin = "Test user";
-        private static string TestToken = "Empty";
+        private readonly IJwtAuthService _jwtAuthService;
+        private readonly ILogger<AuthController> _logger;
         
-        [HttpGet("[action]")]
-        public IActionResult Me(string testKey)
+        public const string AuthToken = "Authorization";
+
+        public AuthController(IJwtAuthService jwtAuthService, ILogger<AuthController> logger)
         {
-            var authToken =this.HttpContext.Request.Cookies["Authorization"];
-            if (authToken != TestToken)
-            {
+            _jwtAuthService = jwtAuthService;
+            _logger = logger;
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public IActionResult Login([FromBody] LoginModel inputDto)
+        {
+            var user = new UserModel();
+
+            if (user == null)
                 return Unauthorized();
-            }
-            
+
+            var claims = new[]
+            {
+                new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserId.ToString()),
+            };
+
+            var jwtResult = _jwtAuthService.GenerateToken(inputDto.Login, claims, DateTime.Now);
+            _logger.Log(LogLevel.Information, $"{inputDto.Login} has been logged");
+
+            HttpContext.Response.Cookies.Append(AuthToken, jwtResult.AccessToken, new CookieOptions()
+            {
+                Expires = jwtResult.AuthTokenMetadata.ExpireAt
+            });
+
             return Ok(new PersonModel()
             {
-                Login = TestLogin
+                Login = jwtResult.AuthTokenMetadata.UserName,
             });
         }
 
-        [HttpPost("[action]")]
-        public IActionResult Login(LoginModel loginModel)
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Registration(RegistrationModel dto)
         {
-            TestLogin = loginModel.Login;
-            TestToken = Guid.NewGuid().ToString();
+            throw new NotImplementedException();
+        }
 
-            HttpContext.Response.Cookies.Append("Authorization", TestToken, new CookieOptions()
+        [HttpPost]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Recovery()
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet("[action]")]
+        [Authorize]
+        public IActionResult Me(string testKey)
+        {
+            return Ok(new PersonModel()
             {
-                Expires = DateTimeOffset.MaxValue
+                Login = "TestLogin"
             });
-
-            var loginResult = new LoginResultModel()
-            {
-                Person = new PersonModel()
-                {
-                    Login = TestLogin
-                }
-            };
-            
-            return Ok(loginResult);
         }
     }
 }

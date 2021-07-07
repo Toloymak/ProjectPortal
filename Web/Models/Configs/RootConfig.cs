@@ -1,6 +1,6 @@
 ﻿namespace Web.Models.Configs
 {
-    public class ConfigModel
+    public class WebRootConfig
     {
         public ServerConfigModel Server { get; set; }
     }
