@@ -1,0 +1,59 @@
+﻿@inherits LayoutComponentBase
+@inject IMatToaster _toaster
+
+<style>
+    .body-wrapper{
+        margin: 50px auto;
+        max-width: 1200px;
+    }
+    
+    .mdc-drawer-app-content{
+        position: static !important;
+    }
+</style>
+
+<MatThemeProvider Theme="_defaultTheme">
+    <MatAppBarContainer>
+        <MatAppBar Style="z-index: 100; position: sticky">
+            <Header ChangeOrganization="ChangeOrganization"
+                    ChangeMenuButton="ChangeMenuButton"
+                    PrintTest="PrintTest">
+            </Header>
+        </MatAppBar>
+        <MatDrawerContent>
+            <MatDrawer @bind-Opened="@_isVisibleMenu">
+                <MatDrawerContent>
+                    <NavMenu></NavMenu>
+                </MatDrawerContent>
+            </MatDrawer>
+            <MatDrawerContent Style="po">
+                <div class="body-wrapper">
+                    @Body
+                </div>
+            </MatDrawerContent>
+        </MatDrawerContent>
+    </MatAppBarContainer>
+</MatThemeProvider>
+
+
+@code
+{
+    private readonly MatTheme _defaultTheme = new MatTheme();
+
+    private string Org { get; set; }
+    private bool _isVisibleMenu;
+
+    private void ChangeMenuButton(bool isActive) => _isVisibleMenu = isActive;
+
+    private void PrintTest()
+    {
+        Console.WriteLine("Org: " + Org);
+        _toaster.Add("Org: " + Org, MatToastType.Info, "Debug info", MatIconNames.Info); 
+        Console.WriteLine("done!");
+    }
+
+    private void ChangeOrganization(string organizationName)
+    {
+        Org = organizationName;
+    }
+}

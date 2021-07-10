@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Types.Models
+﻿namespace Types.Models
 {
     public class ExecutionResult
     {

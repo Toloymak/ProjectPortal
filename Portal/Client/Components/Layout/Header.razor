@@ -1,0 +1,29 @@
+﻿<style>
+    .body-wrapper{
+        margin: 50px auto;
+        max-width: 1200px;
+    }
+    
+    .user-menu{
+        z-index: 999;
+        margin-top: 65px;
+    }
+</style>
+
+<MatAppBarRow>
+    <MatAppBarSection>
+        <MatIconButton Icon="menu" ToggledChanged="ChangeMenuButton"></MatIconButton>
+        <MatAppBarTitle>Project portal</MatAppBarTitle>
+    </MatAppBarSection>
+    <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+        <MatIconButton Icon="@MatIconNames.Title" OnClick="PrintTest"/>
+        <UserMenu ChangeOrganization="ChangeOrganization"></UserMenu>
+    </MatAppBarSection>
+</MatAppBarRow>
+
+@code
+{
+    [Parameter] public EventCallback<string> ChangeOrganization { get; set; }
+    [Parameter] public EventCallback PrintTest { get; set; }
+    [Parameter] public EventCallback<bool> ChangeMenuButton { get; set; }
+}

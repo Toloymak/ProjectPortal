@@ -1,8 +1,9 @@
 ﻿@page "/"
 @using Types.Models
-@using Web.Components.Links
-@inject IMatDialogService _matDialogService
+@using Portal.Client.Components.Links
+@using System.Data
 @inject HttpClient _httpClient
+@inject IMatDialogService _matDialogService
 
 <style>
     .board{
@@ -102,12 +103,6 @@
     
 </style>
 
-<button @onclick="LogUsername">Log username</button>
-
-<p>@_authMessage</p>
-<p>@_test</p>
-
-
 <div class="board">
     @foreach (var block in _blockModels)
     {
@@ -133,8 +128,12 @@
 
 @code
 {
-    private readonly IList<BlockModel> _blockModels = new List<BlockModel>();
-    private string _test = "";
+    private IList<BlockModel> _blockModels = new List<BlockModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _blockModels = await _httpClient.GetJsonAsync<List<BlockModel>>("blocks");
+    }
 
     private Task OpenEditDialog()
     {
@@ -143,22 +142,4 @@
     
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
-
-    private string _authMessage;
-
-    private async Task LogUsername()
-    {
-        _test = await _httpClient.GetStringAsync("blocks");
-    // var authState = await authenticationStateTask;
-    // var user = authState.User;
-    //
-    // if (user.Identity.IsAuthenticated)
-    // {
-    //     _authMessage = $"{user.Identity.Name} is authenticated.";
-    // }
-    // else
-    // {
-    //     _authMessage = "The user is NOT authenticated.";
-    // }
-    }
 }
