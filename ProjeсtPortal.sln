@@ -1,16 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{CEC98C7F-8711-42FE-855F-587B781F22C7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CEC98C7F-8711-42FE-855F-587B781F22C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEC98C7F-8711-42FE-855F-587B781F22C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEC98C7F-8711-42FE-855F-587B781F22C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEC98C7F-8711-42FE-855F-587B781F22C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
