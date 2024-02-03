@@ -1,0 +1,30 @@
+﻿@page "/"
+@rendermode InteractiveAuto
+@using Portal.Models
+
+@inject IDialogService DialogService
+
+<PageTitle>Home</PageTitle>
+
+<MudButton OnClick="@ShowImportDialog">
+    Import
+</MudButton>
+
+TBD
+
+@code
+{
+    private IReadOnlyCollection<LinkBlock> _linkBlocks = Array.Empty<LinkBlock>();
+
+    protected override Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInitializedAsync");
+        return base.OnInitializedAsync();
+    }
+    
+    private void ShowImportDialog()
+    {
+        Console.WriteLine("ShowImportDialog");
+        DialogService.Show<LinksImportDialog>();
+    }
+}
